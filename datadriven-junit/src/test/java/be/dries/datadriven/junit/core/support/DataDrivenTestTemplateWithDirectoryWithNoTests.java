@@ -10,7 +10,7 @@ import be.dries.datadriven.junit.core.DataDrivenTestTemplate;
  *
  * @author Dries Elliott
  */
-@DataDrivenTemplateTestCase(directory = "directoryWithNoTests")
+@DataDrivenTemplateTestCase(directory = "directoryWithNoTests", inputFileName = "")
 public class DataDrivenTestTemplateWithDirectoryWithNoTests {
     @DataDrivenTestTemplate
     @SuppressWarnings("unused")

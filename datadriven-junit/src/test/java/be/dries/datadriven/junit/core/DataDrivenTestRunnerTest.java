@@ -43,7 +43,7 @@ public class DataDrivenTestRunnerTest {
     }
 
     @Test
-    public void testTestsGeneratedForTestDirectories() throws InitializationError {
+    public void testDataDrivenTemplateTestCaseVerifyTestsGeneratedForTestDirectories() throws InitializationError {
         DataDrivenTestRunner runner = new DataDrivenTestRunner(DataDrivenTestTemplateWithDirectoryWithTests.class);
 
         runner.getChildren().clear();
@@ -56,5 +56,10 @@ public class DataDrivenTestRunnerTest {
         assertThat(testMethods.get(0))
                 .describedAs("The test method does not have the expected name!")
                 .hasName("test");
+    }
+
+    @Test(expected = NoInputFileFoundForTestException.class)
+    public void testDataDrivenTemplateTestCaseWithTestWithNoInputFile() throws InitializationError {
+        new DataDrivenTestRunner(DataDrivenTestTemplateWithDirectoryWithTestButMissingInputFile.class);
     }
 }

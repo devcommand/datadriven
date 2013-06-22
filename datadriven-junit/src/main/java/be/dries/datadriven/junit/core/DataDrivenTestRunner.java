@@ -1,12 +1,14 @@
 package be.dries.datadriven.junit.core;
 
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.commons.io.filefilter.NameFileFilter;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FilenameFilter;
 import java.util.List;
 
 /**
@@ -43,6 +45,12 @@ public class DataDrivenTestRunner extends BlockJUnit4ClassRunner {
         DataDrivenTemplateTestCase templateTestCaseAnnotation = TestClassUtils.findAnnotation(getTestClass(), DataDrivenTemplateTestCase.class);
 
         if (templateTestCaseAnnotation != null) {
+            List<FrameworkMethod> templateMethods = getTestClass().getAnnotatedMethods(DataDrivenTestTemplate.class);
+
+            if (templateMethods.isEmpty()) {
+                throw new NoTemplateMethodFoundException();
+            }
+
             String directoryName = templateTestCaseAnnotation.directory();
 
             if (ClassPathUtils.directoryExists(directoryName)) {
@@ -51,6 +59,12 @@ public class DataDrivenTestRunner extends BlockJUnit4ClassRunner {
 
                 if (tests.length != 0) {
                     for (File test : tests) {
+                        File[] inputFiles = test.listFiles((FilenameFilter) new NameFileFilter(templateTestCaseAnnotation.inputFileName()));
+
+                        if (inputFiles.length == 0) {
+                            throw new NoInputFileFoundForTestException(directoryName, test.getName());
+                        }
+
                         testMethods.add(new DataDrivenFrameworkMethod(test.getName()));
                     }
                 } else {
@@ -58,12 +72,6 @@ public class DataDrivenTestRunner extends BlockJUnit4ClassRunner {
                 }
             } else {
                 throw new NoTestCaseDirectoryFoundException(directoryName);
-            }
-
-            List<FrameworkMethod> templateMethods = getTestClass().getAnnotatedMethods(DataDrivenTestTemplate.class);
-
-            if (templateMethods.isEmpty()) {
-                throw new NoTemplateMethodFoundException();
             }
         }
 
