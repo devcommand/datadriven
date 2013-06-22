@@ -3,7 +3,8 @@ package be.dries.datadriven.junit.core.support;
 import org.junit.Test;
 
 /**
- * Description goes here.
+ * {@code TraditionalTestCaseMock} is a class representing a traditional
+ * JUnit test case.
  *
  * @author Dries Elliott
  */

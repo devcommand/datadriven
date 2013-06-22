@@ -31,6 +31,16 @@ public class DataDrivenTestRunner extends BlockJUnit4ClassRunner {
      */
     @Override
     protected List<FrameworkMethod> computeTestMethods() {
+        DataDrivenTemplateTestCase templateTestCaseAnnotation = TestClassUtils.findAnnotation(getTestClass(), DataDrivenTemplateTestCase.class);
+
+        if (templateTestCaseAnnotation != null) {
+            List<FrameworkMethod> templateMethods = getTestClass().getAnnotatedMethods(DataDrivenTestTemplate.class);
+
+            if (templateMethods.isEmpty()) {
+                throw new NoTemplateMethodFoundException();
+            }
+        }
+
         return super.computeTestMethods();
     }
 }
