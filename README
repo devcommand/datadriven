@@ -1,1 +1,2 @@
-This file was created by IntelliJ IDEA 12.1.4 for binding GitHub repository
+Data-Driven is a JUnit extension allowing you to use files to store test data
+that is not easily represented using Java.
