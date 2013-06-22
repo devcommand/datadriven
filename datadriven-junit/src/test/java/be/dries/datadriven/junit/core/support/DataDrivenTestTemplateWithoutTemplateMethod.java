@@ -9,6 +9,6 @@ import be.dries.datadriven.junit.core.DataDrivenTemplateTestCase;
  *
  * @author Dries Elliott
  */
-@DataDrivenTemplateTestCase(directory = "noTemplateMethodTestCase", inputFileName = "")
+@DataDrivenTemplateTestCase(directory = "noTemplateMethodTestCase", inputFileName = "", outputFileName = "")
 public class DataDrivenTestTemplateWithoutTemplateMethod {
 }

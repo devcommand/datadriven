@@ -65,7 +65,13 @@ public class DataDrivenTestRunner extends BlockJUnit4ClassRunner {
                             throw new NoInputFileFoundForTestException(directoryName, test.getName());
                         }
 
-                        testMethods.add(new DataDrivenFrameworkMethod(test.getName()));
+                        File[] outputFiles = test.listFiles((FilenameFilter) new NameFileFilter(templateTestCaseAnnotation.outputFileName()));
+
+                        if (outputFiles.length == 0) {
+                            throw new NoOutputFileFoundForTestException(directoryName, test.getName());
+                        }
+
+                        testMethods.add(new DataDrivenTemplateFrameworkMethod(test.getName()));
                     }
                 } else {
                     throw new NoTestsFoundForTestCaseException(directoryName);

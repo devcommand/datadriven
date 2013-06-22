@@ -17,4 +17,6 @@ public @interface DataDrivenTemplateTestCase {
     String directory();
 
     String inputFileName();
+
+    String outputFileName();
 }
