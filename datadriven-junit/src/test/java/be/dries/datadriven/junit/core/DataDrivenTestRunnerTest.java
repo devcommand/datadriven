@@ -1,7 +1,8 @@
 package be.dries.datadriven.junit.core;
 
 import be.dries.datadriven.junit.core.support.DataDrivenTestTemplateForNonExistentTestCaseDirectory;
-import be.dries.datadriven.junit.core.support.DataDrivenTestTemplateWithoutTemplateMethodTestCaseMock;
+import be.dries.datadriven.junit.core.support.DataDrivenTestTemplateWithDirectoryWithNoTests;
+import be.dries.datadriven.junit.core.support.DataDrivenTestTemplateWithoutTemplateMethod;
 import be.dries.datadriven.junit.core.support.TraditionalTestCaseMock;
 import org.junit.Test;
 import org.junit.runners.model.FrameworkMethod;
@@ -31,11 +32,16 @@ public class DataDrivenTestRunnerTest {
 
     @Test(expected = NoTemplateMethodFoundException.class)
     public void testDataDrivenTemplateTestCaseWithoutTemplateMethodFails() throws InitializationError {
-        new DataDrivenTestRunner(DataDrivenTestTemplateWithoutTemplateMethodTestCaseMock.class);
+        new DataDrivenTestRunner(DataDrivenTestTemplateWithoutTemplateMethod.class);
     }
 
     @Test(expected = NoTestCaseDirectoryFoundException.class)
-    public void testDataDrivenTemplateTestCaseButDefaultDirectoryNotFound() throws InitializationError {
+    public void testDataDrivenTemplateTestCaseDirectoryNotFound() throws InitializationError {
         new DataDrivenTestRunner(DataDrivenTestTemplateForNonExistentTestCaseDirectory.class);
+    }
+
+    @Test(expected = NoTestsFoundForTestCaseException.class)
+    public void testDataDrivenTemplateTestCaseWithDirectoryWithNoTests() throws InitializationError {
+        new DataDrivenTestRunner(DataDrivenTestTemplateWithDirectoryWithNoTests.class);
     }
 }

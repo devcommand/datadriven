@@ -1,9 +1,12 @@
 package be.dries.datadriven.junit.core;
 
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.util.List;
 
 /**
@@ -37,7 +40,14 @@ public class DataDrivenTestRunner extends BlockJUnit4ClassRunner {
         if (templateTestCaseAnnotation != null) {
             String directoryName = templateTestCaseAnnotation.directory();
 
-            if (!ClassPathUtils.directoryExists(directoryName)) {
+            if (ClassPathUtils.directoryExists(directoryName)) {
+                File directory = ClassPathUtils.getDirectory(directoryName);
+                File[] tests = directory.listFiles((FileFilter) DirectoryFileFilter.INSTANCE);
+
+                if (tests.length == 0) {
+                    throw new NoTestsFoundForTestCaseException(directoryName);
+                }
+            } else {
                 throw new NoTestCaseDirectoryFoundException(directoryName);
             }
 

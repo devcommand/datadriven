@@ -12,15 +12,22 @@ import java.net.URL;
  */
 public class ClassPathUtils {
     public static boolean directoryExists(String directory) {
+        return getDirectory(directory) != null;
+    }
+
+    public static File getDirectory(String directory) {
         try {
             URL url = ClassPathUtils.class.getResource("/" + directory);
 
             if (url != null) {
                 File file = new File(url.toURI());
-                return file.exists() && file.isDirectory();
-            } else {
-                return false;
+
+                if (file.exists() && file.isDirectory()) {
+                    return file;
+                }
             }
+
+            return null;
         } catch (URISyntaxException e) {
             throw new DataDrivenException(e);
         }
