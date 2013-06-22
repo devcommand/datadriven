@@ -27,6 +27,11 @@ public class DataDrivenTestRunner extends BlockJUnit4ClassRunner {
         super(klass);
     }
 
+    @Override
+    protected List<FrameworkMethod> getChildren() {
+        return super.getChildren();
+    }
+
     /**
      * Computes all test methods this runner will execute.
      *
@@ -44,7 +49,11 @@ public class DataDrivenTestRunner extends BlockJUnit4ClassRunner {
                 File directory = ClassPathUtils.getDirectory(directoryName);
                 File[] tests = directory.listFiles((FileFilter) DirectoryFileFilter.INSTANCE);
 
-                if (tests.length == 0) {
+                if (tests.length != 0) {
+                    for (File test : tests) {
+                        testMethods.add(new DataDrivenFrameworkMethod(test.getName()));
+                    }
+                } else {
                     throw new NoTestsFoundForTestCaseException(directoryName);
                 }
             } else {

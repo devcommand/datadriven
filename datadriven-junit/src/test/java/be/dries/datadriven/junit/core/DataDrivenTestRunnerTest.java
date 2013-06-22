@@ -1,9 +1,6 @@
 package be.dries.datadriven.junit.core;
 
-import be.dries.datadriven.junit.core.support.DataDrivenTestTemplateForNonExistentTestCaseDirectory;
-import be.dries.datadriven.junit.core.support.DataDrivenTestTemplateWithDirectoryWithNoTests;
-import be.dries.datadriven.junit.core.support.DataDrivenTestTemplateWithoutTemplateMethod;
-import be.dries.datadriven.junit.core.support.TraditionalTestCaseMock;
+import be.dries.datadriven.junit.core.support.*;
 import org.junit.Test;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
@@ -43,5 +40,21 @@ public class DataDrivenTestRunnerTest {
     @Test(expected = NoTestsFoundForTestCaseException.class)
     public void testDataDrivenTemplateTestCaseWithDirectoryWithNoTests() throws InitializationError {
         new DataDrivenTestRunner(DataDrivenTestTemplateWithDirectoryWithNoTests.class);
+    }
+
+    @Test
+    public void testTestsGeneratedForTestDirectories() throws InitializationError {
+        DataDrivenTestRunner runner = new DataDrivenTestRunner(DataDrivenTestTemplateWithDirectoryWithTests.class);
+
+        runner.getChildren().clear();
+
+        List<FrameworkMethod> testMethods = runner.computeTestMethods();
+
+        assertThat(testMethods)
+                .describedAs("Expected at least one test method!")
+                .hasSize(1);
+        assertThat(testMethods.get(0))
+                .describedAs("The test method does not have the expected name!")
+                .hasName("test");
     }
 }

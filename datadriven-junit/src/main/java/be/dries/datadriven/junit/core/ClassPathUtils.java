@@ -11,10 +11,23 @@ import java.net.URL;
  * @author Dries Elliott
  */
 public class ClassPathUtils {
+    /**
+     * Checks if the given directory exists on the classpath.
+     *
+     * @param directory The directory that is being verified.
+     * @return True if the directory exists.
+     */
     public static boolean directoryExists(String directory) {
         return getDirectory(directory) != null;
     }
 
+    /**
+     * Gets a {@link File} pointer to the given classpath directory.
+     *
+     * @param directory The directory to create a pointer for.
+     * @return A {@code File} pointer or {@code null} if the directory
+     *         does not exist or is no directory.
+     */
     public static File getDirectory(String directory) {
         try {
             URL url = ClassPathUtils.class.getResource("/" + directory);
