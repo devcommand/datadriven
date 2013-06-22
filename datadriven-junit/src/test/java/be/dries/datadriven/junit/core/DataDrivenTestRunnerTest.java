@@ -1,5 +1,6 @@
 package be.dries.datadriven.junit.core;
 
+import be.dries.datadriven.junit.core.support.DataDrivenTestTemplateForNonExistentTestCaseDirectory;
 import be.dries.datadriven.junit.core.support.DataDrivenTestTemplateWithoutTemplateMethodTestCaseMock;
 import be.dries.datadriven.junit.core.support.TraditionalTestCaseMock;
 import org.junit.Test;
@@ -31,5 +32,10 @@ public class DataDrivenTestRunnerTest {
     @Test(expected = NoTemplateMethodFoundException.class)
     public void testDataDrivenTemplateTestCaseWithoutTemplateMethodFails() throws InitializationError {
         new DataDrivenTestRunner(DataDrivenTestTemplateWithoutTemplateMethodTestCaseMock.class);
+    }
+
+    @Test(expected = NoTestCaseDirectoryFoundException.class)
+    public void testDataDrivenTemplateTestCaseButDefaultDirectoryNotFound() throws InitializationError {
+        new DataDrivenTestRunner(DataDrivenTestTemplateForNonExistentTestCaseDirectory.class);
     }
 }

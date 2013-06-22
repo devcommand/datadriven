@@ -9,6 +9,6 @@ import be.dries.datadriven.junit.core.DataDrivenTemplateTestCase;
  *
  * @author Dries Elliott
  */
-@DataDrivenTemplateTestCase
+@DataDrivenTemplateTestCase(directory = "noTemplateMethodTestCase")
 public class DataDrivenTestTemplateWithoutTemplateMethodTestCaseMock {
 }

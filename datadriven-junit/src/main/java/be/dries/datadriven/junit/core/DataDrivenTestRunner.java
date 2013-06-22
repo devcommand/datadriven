@@ -31,9 +31,16 @@ public class DataDrivenTestRunner extends BlockJUnit4ClassRunner {
      */
     @Override
     protected List<FrameworkMethod> computeTestMethods() {
+        List<FrameworkMethod> testMethods = super.computeTestMethods();
         DataDrivenTemplateTestCase templateTestCaseAnnotation = TestClassUtils.findAnnotation(getTestClass(), DataDrivenTemplateTestCase.class);
 
         if (templateTestCaseAnnotation != null) {
+            String directoryName = templateTestCaseAnnotation.directory();
+
+            if (!ClassPathUtils.directoryExists(directoryName)) {
+                throw new NoTestCaseDirectoryFoundException(directoryName);
+            }
+
             List<FrameworkMethod> templateMethods = getTestClass().getAnnotatedMethods(DataDrivenTestTemplate.class);
 
             if (templateMethods.isEmpty()) {
@@ -41,6 +48,6 @@ public class DataDrivenTestRunner extends BlockJUnit4ClassRunner {
             }
         }
 
-        return super.computeTestMethods();
+        return testMethods;
     }
 }

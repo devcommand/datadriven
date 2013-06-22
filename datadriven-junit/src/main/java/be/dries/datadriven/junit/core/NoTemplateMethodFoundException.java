@@ -7,7 +7,7 @@ package be.dries.datadriven.junit.core;
  *
  * @author Dries Elliott
  */
-public class NoTemplateMethodFoundException extends RuntimeException {
+public class NoTemplateMethodFoundException extends DataDrivenException {
     /**
      * Creates a new {@code NoTemplateMethodFoundException}.
      */
