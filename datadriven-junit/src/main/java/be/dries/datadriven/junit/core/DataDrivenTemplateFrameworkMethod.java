@@ -2,6 +2,7 @@ package be.dries.datadriven.junit.core;
 
 import org.junit.runners.model.FrameworkMethod;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -49,6 +50,10 @@ public class DataDrivenTemplateFrameworkMethod extends FrameworkMethod {
      */
     @Override
     public Object invokeExplosively(final Object target, Object... params) throws Throwable {
-        return getMethod().invoke(target, input, expectedOutput);
+        try {
+            return getMethod().invoke(target, input, expectedOutput);
+        } catch (InvocationTargetException ex) {
+            throw ex.getCause();
+        }
     }
 }
