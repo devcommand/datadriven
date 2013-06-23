@@ -1,6 +1,5 @@
 package be.dries.datadriven.junit.core;
 
-import org.junit.internal.runners.model.ReflectiveCallable;
 import org.junit.runners.model.FrameworkMethod;
 
 import java.lang.reflect.Method;
@@ -13,7 +12,6 @@ import java.lang.reflect.Method;
  */
 public class DataDrivenTemplateFrameworkMethod extends FrameworkMethod {
     private String name;
-    private Method method;
     private String input;
     private String expectedOutput;
 
@@ -23,10 +21,9 @@ public class DataDrivenTemplateFrameworkMethod extends FrameworkMethod {
      * @param name The name of the test.
      */
     public DataDrivenTemplateFrameworkMethod(String name, Method method, String input, String expectedOutput) {
-        super(null);
+        super(method);
 
         this.name = name;
-        this.method = method;
         this.input = input;
         this.expectedOutput = expectedOutput;
     }
@@ -41,13 +38,17 @@ public class DataDrivenTemplateFrameworkMethod extends FrameworkMethod {
         return name;
     }
 
+    /**
+     * Invokes the template method contained in this
+     * {@code DataDrivenTemplateFrameworkMethod}.
+     *
+     * @param target The target object of the invocation.
+     * @param params The parameters of the invocation (unused).
+     * @return The result of the invocation.
+     * @throws Throwable If something goes wrong during invocation.
+     */
     @Override
     public Object invokeExplosively(final Object target, Object... params) throws Throwable {
-        return new ReflectiveCallable() {
-            @Override
-            protected Object runReflectiveCall() throws Throwable {
-                return method.invoke(target, input, expectedOutput);
-            }
-        };
+        return getMethod().invoke(target, input, expectedOutput);
     }
 }

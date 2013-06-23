@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,23 +33,15 @@ public class DataDrivenTestRunner extends BlockJUnit4ClassRunner {
     }
 
     /**
-     * Gets all framework methods for this test runner.
-     *
-     * @return A list of {@code FrameworkMethod}s.
-     */
-    @Override
-    protected List<FrameworkMethod> getChildren() {
-        return super.getChildren();
-    }
-
-    /**
      * Computes all test methods this runner will execute.
      *
      * @return A list of {@code FrameworkMethod}s describing the test methods.
      */
     @Override
     protected List<FrameworkMethod> computeTestMethods() {
-        List<FrameworkMethod> testMethods = super.computeTestMethods();
+        List<FrameworkMethod> testMethods = new ArrayList<FrameworkMethod>();
+        testMethods.addAll(super.computeTestMethods());
+
         DataDrivenTemplateTestCase templateTestCaseAnnotation = TestClassUtils.findAnnotation(getTestClass(), DataDrivenTemplateTestCase.class);
 
         if (templateTestCaseAnnotation != null) {

@@ -1,7 +1,6 @@
 package be.dries.datadriven.junit.core;
 
 import org.junit.Test;
-import org.junit.internal.runners.model.ReflectiveCallable;
 
 import java.lang.reflect.Method;
 
@@ -18,8 +17,7 @@ public class DataDrivenTemplateFrameworkMethodTest {
         Method stubMethod = DataDrivenTemplateFrameworkMethodTest.class.getMethod("stubMethod", String.class, String.class);
         DataDrivenTemplateFrameworkMethod method = new DataDrivenTemplateFrameworkMethod("test", stubMethod, "test-input", "expected-output");
 
-        ReflectiveCallable callable = (ReflectiveCallable) method.invokeExplosively(this);
-        callable.run();
+        method.invokeExplosively(this);
 
         assertThat(invoked)
                 .describedAs("Expected the stub method to be invoked.")

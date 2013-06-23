@@ -46,8 +46,6 @@ public class DataDrivenTestRunnerTest {
     public void testDataDrivenTemplateTestCaseVerifyTestsGeneratedForTestDirectories() throws InitializationError {
         DataDrivenTestRunner runner = new DataDrivenTestRunner(DataDrivenTestTemplateWithDirectoryWithTests.class);
 
-        runner.getChildren().clear();
-
         List<FrameworkMethod> testMethods = runner.computeTestMethods();
 
         assertThat(testMethods)
