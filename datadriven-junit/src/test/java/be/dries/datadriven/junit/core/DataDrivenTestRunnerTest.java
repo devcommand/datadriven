@@ -58,12 +58,12 @@ public class DataDrivenTestRunnerTest {
                 .hasName("test");
     }
 
-    @Test(expected = NoInputFileFoundForTestException.class)
+    @Test(expected = NoTestFileFoundException.class)
     public void testDataDrivenTemplateTestCaseWithTestWithNoInputFile() throws InitializationError {
         new DataDrivenTestRunner(DataDrivenTestTemplateWithDirectoryWithTestButMissingInputFile.class);
     }
 
-    @Test(expected = NoOutputFileFoundForTestException.class)
+    @Test(expected = NoTestFileFoundException.class)
     public void testDataDrivenTemplateTestCaseWithTestWithNoOutputFile() throws InitializationError {
         new DataDrivenTestRunner(DataDrivenTestTemplateWithDirectoryWithTestButMissingOutputFile.class);
     }
