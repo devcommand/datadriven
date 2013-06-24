@@ -65,4 +65,9 @@ public class DataDrivenTestRunnerTest {
     public void testDataDrivenTemplateTestCaseWithTestWithNoOutputFile() throws InitializationError {
         new DataDrivenTestRunner(DataDrivenTestTemplateWithDirectoryWithTestButMissingOutputFile.class);
     }
+
+    @Test(expected = NoTestCaseDirectoryFoundException.class)
+    public void testDataDrivenTestCaseDirectoryNotFound() throws InitializationError {
+        new DataDrivenTestRunner(DataDrivenTestWithNonExistentTestCaseDirectory.class);
+    }
 }

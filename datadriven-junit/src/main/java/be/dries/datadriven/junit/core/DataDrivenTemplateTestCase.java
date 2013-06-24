@@ -7,7 +7,8 @@ import java.lang.annotation.Target;
 
 /**
  * {@code DataDrivenTemplateTestCase} is an annotation defining a JUnit test
- * case as being data-driven.
+ * case as being data-driven. The difference with a standard data-driven test
+ * case is the template-based approach used for these types of tests.
  *
  * @author Dries Elliott
  */

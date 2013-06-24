@@ -45,31 +45,49 @@ public class DataDrivenTestRunner extends BlockJUnit4ClassRunner {
         DataDrivenTemplateTestCase templateTestCaseAnnotation = TestClassUtils.findAnnotation(getTestClass(), DataDrivenTemplateTestCase.class);
 
         if (templateTestCaseAnnotation != null) {
-            List<FrameworkMethod> templateMethods = getTestClass().getAnnotatedMethods(DataDrivenTestTemplate.class);
+            testMethods.addAll(computeTemplateTestMethods(templateTestCaseAnnotation));
+        }
 
-            if (templateMethods.isEmpty()) {
-                throw new NoTemplateMethodFoundException();
-            }
+        DataDrivenTestCase dataDrivenTestCaseAnnotation = TestClassUtils.findAnnotation(getTestClass(), DataDrivenTestCase.class);
 
-            String testCaseName = templateTestCaseAnnotation.directory();
+        if (dataDrivenTestCaseAnnotation != null) {
+            String testCaseName = dataDrivenTestCaseAnnotation.directory();
 
-            if (ClassPathUtils.directoryExists(testCaseName)) {
-                File directory = ClassPathUtils.getDirectory(testCaseName);
-                File[] tests = directory.listFiles((FileFilter) DirectoryFileFilter.INSTANCE);
-
-                if (tests.length != 0) {
-                    for (File testDirectory : tests) {
-                        String input = readTestFile(testCaseName, testDirectory, templateTestCaseAnnotation.inputFileName());
-                        String expectedOutput = readTestFile(testCaseName, testDirectory, templateTestCaseAnnotation.outputFileName());
-
-                        testMethods.add(new DataDrivenTemplateFrameworkMethod(testDirectory.getName(), templateMethods.get(0).getMethod(), input, expectedOutput));
-                    }
-                } else {
-                    throw new NoTestsFoundForTestCaseException(testCaseName);
-                }
-            } else {
+            if (!ClassPathUtils.directoryExists(testCaseName)) {
                 throw new NoTestCaseDirectoryFoundException(testCaseName);
             }
+        }
+
+        return testMethods;
+    }
+
+    private List<FrameworkMethod> computeTemplateTestMethods(DataDrivenTemplateTestCase templateAnnotation) {
+        List<FrameworkMethod> testMethods = new ArrayList<FrameworkMethod>();
+
+        List<FrameworkMethod> templateMethods = getTestClass().getAnnotatedMethods(DataDrivenTestTemplate.class);
+
+        if (templateMethods.isEmpty()) {
+            throw new NoTemplateMethodFoundException();
+        }
+
+        String testCaseName = templateAnnotation.directory();
+
+        if (ClassPathUtils.directoryExists(testCaseName)) {
+            File directory = ClassPathUtils.getDirectory(testCaseName);
+            File[] tests = directory.listFiles((FileFilter) DirectoryFileFilter.INSTANCE);
+
+            if (tests.length != 0) {
+                for (File testDirectory : tests) {
+                    String input = readTestFile(testCaseName, testDirectory, templateAnnotation.inputFileName());
+                    String expectedOutput = readTestFile(testCaseName, testDirectory, templateAnnotation.outputFileName());
+
+                    testMethods.add(new DataDrivenTemplateFrameworkMethod(testDirectory.getName(), templateMethods.get(0).getMethod(), input, expectedOutput));
+                }
+            } else {
+                throw new NoTestsFoundForTestCaseException(testCaseName);
+            }
+        } else {
+            throw new NoTestCaseDirectoryFoundException(testCaseName);
         }
 
         return testMethods;
