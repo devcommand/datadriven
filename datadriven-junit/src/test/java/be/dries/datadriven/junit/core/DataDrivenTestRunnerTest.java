@@ -75,4 +75,9 @@ public class DataDrivenTestRunnerTest {
     public void testDataDrivenTestCaseWithDirectoryWithNoTests() throws InitializationError {
         new DataDrivenTestRunner(DataDrivenTestWithDirectoryWithNoTests.class);
     }
+
+    @Test(expected = NoMatchingTestMethodForTestDirectoryException.class)
+    public void testDataDrivenTestCaseWithDirectoryWithTestButNoMatchingTestMethodIsDefined() throws InitializationError {
+        new DataDrivenTestRunner(DataDrivenTestWithDirectoryWithTestButNoTestMethod.class);
+    }
 }

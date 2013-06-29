@@ -47,6 +47,22 @@ public class DataDrivenTestRunner extends BlockJUnit4ClassRunner {
             String testCaseName = dataDrivenTestCaseAnnotation.directory();
 
             TestCaseDirectory directory = new TestCaseDirectory(testCaseName);
+
+            for (TestDirectory testDirectory : directory.getTestDirectories()) {
+                List<FrameworkMethod> dataDrivenTests = getTestClass().getAnnotatedMethods(DataDrivenTest.class);
+                FrameworkMethod matchingTestMethod = null;
+
+                for (FrameworkMethod dataDrivenTest : dataDrivenTests) {
+                    if (dataDrivenTest.getName().equals(testDirectory.getName())) {
+                        matchingTestMethod = dataDrivenTest;
+                        break;
+                    }
+                }
+
+                if (matchingTestMethod == null) {
+                    throw new NoMatchingTestMethodForTestDirectoryException(testCaseName, testDirectory.getName());
+                }
+            }
         }
 
         return testMethods;
