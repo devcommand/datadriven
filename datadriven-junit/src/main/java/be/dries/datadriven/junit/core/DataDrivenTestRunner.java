@@ -65,7 +65,7 @@ public class DataDrivenTestRunner extends BlockJUnit4ClassRunner {
 
                 String input = testDirectory.read(dataDrivenTestCaseAnnotation.inputFileName());
 
-                testMethods.add(matchingTestMethod);
+                testMethods.add(new DataDrivenFrameworkMethod(testDirectory.getName(), matchingTestMethod.getMethod(), input));
             }
         }
 

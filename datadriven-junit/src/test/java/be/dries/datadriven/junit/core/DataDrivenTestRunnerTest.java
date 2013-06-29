@@ -51,9 +51,13 @@ public class DataDrivenTestRunnerTest {
         assertThat(testMethods)
                 .describedAs("Expected at least one test method!")
                 .hasSize(1);
-        assertThat(testMethods.get(0))
+
+        FrameworkMethod method = testMethods.get(0);
+        assertThat(method)
                 .describedAs("The test method does not have the expected name!")
-                .hasName("test");
+                .hasName("test")
+                .describedAs("The test method is not of the correct type!")
+                .isDataDrivenTemplateMethod();
     }
 
     @Test(expected = NoTestFileFoundException.class)
@@ -90,9 +94,12 @@ public class DataDrivenTestRunnerTest {
         assertThat(testMethods)
                 .describedAs("Expected at least one test method!")
                 .hasSize(1);
-        assertThat(testMethods.get(0))
+        FrameworkMethod method = testMethods.get(0);
+        assertThat(method)
                 .describedAs("The test method does not have the expected name!")
-                .hasName("test");
+                .hasName("test")
+                .describedAs("The test method is not of the correct type!")
+                .isDataDrivenMethod();
     }
 
     @Test(expected = NoTestFileFoundException.class)
