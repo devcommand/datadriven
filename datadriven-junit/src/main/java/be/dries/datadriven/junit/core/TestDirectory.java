@@ -35,7 +35,10 @@ public class TestDirectory {
         }
 
         try {
-            return FileUtils.readFileToString(outputFiles[0]);
+            return FileUtils.readFileToString(outputFiles[0])
+                    .replaceAll("(?<!%)%s", " ")
+                    .replaceAll("(?<!%)%t", "\t")
+                    .replaceAll("%%", "%");
         } catch (IOException ex) {
             throw new DataDrivenException(ex);
         }
