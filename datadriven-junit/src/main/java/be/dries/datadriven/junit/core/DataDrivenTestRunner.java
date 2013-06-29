@@ -1,16 +1,9 @@
 package be.dries.datadriven.junit.core;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.NameFileFilter;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FilenameFilter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,9 +46,7 @@ public class DataDrivenTestRunner extends BlockJUnit4ClassRunner {
         if (dataDrivenTestCaseAnnotation != null) {
             String testCaseName = dataDrivenTestCaseAnnotation.directory();
 
-            if (!ClassPathUtils.directoryExists(testCaseName)) {
-                throw new NoTestCaseDirectoryFoundException(testCaseName);
-            }
+            TestCaseDirectory directory = new TestCaseDirectory(testCaseName);
         }
 
         return testMethods;
@@ -72,38 +63,15 @@ public class DataDrivenTestRunner extends BlockJUnit4ClassRunner {
 
         String testCaseName = templateAnnotation.directory();
 
-        if (ClassPathUtils.directoryExists(testCaseName)) {
-            File directory = ClassPathUtils.getDirectory(testCaseName);
-            File[] tests = directory.listFiles((FileFilter) DirectoryFileFilter.INSTANCE);
+        TestCaseDirectory directory = new TestCaseDirectory(testCaseName);
 
-            if (tests.length != 0) {
-                for (File testDirectory : tests) {
-                    String input = readTestFile(testCaseName, testDirectory, templateAnnotation.inputFileName());
-                    String expectedOutput = readTestFile(testCaseName, testDirectory, templateAnnotation.outputFileName());
+        for (TestDirectory testDirectory : directory.getTestDirectories()) {
+            String input = testDirectory.read(templateAnnotation.inputFileName());
+            String expectedOutput = testDirectory.read(templateAnnotation.outputFileName());
 
-                    testMethods.add(new DataDrivenTemplateFrameworkMethod(testDirectory.getName(), templateMethods.get(0).getMethod(), input, expectedOutput));
-                }
-            } else {
-                throw new NoTestsFoundForTestCaseException(testCaseName);
-            }
-        } else {
-            throw new NoTestCaseDirectoryFoundException(testCaseName);
+            testMethods.add(new DataDrivenTemplateFrameworkMethod(testDirectory.getName(), templateMethods.get(0).getMethod(), input, expectedOutput));
         }
 
         return testMethods;
-    }
-
-    private String readTestFile(String testCase, File testDirectory, String filename) {
-        File[] outputFiles = testDirectory.listFiles((FilenameFilter) new NameFileFilter(filename));
-
-        if (outputFiles.length == 0) {
-            throw new NoTestFileFoundException(testCase, testDirectory.getName(), filename);
-        }
-
-        try {
-            return FileUtils.readFileToString(outputFiles[0]);
-        } catch (IOException ex) {
-            throw new DataDrivenException(ex);
-        }
     }
 }
