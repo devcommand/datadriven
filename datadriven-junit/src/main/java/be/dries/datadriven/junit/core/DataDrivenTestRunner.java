@@ -62,6 +62,8 @@ public class DataDrivenTestRunner extends BlockJUnit4ClassRunner {
                 if (matchingTestMethod == null) {
                     throw new NoMatchingTestMethodForTestDirectoryException(testCaseName, testDirectory.getName());
                 }
+
+                testMethods.add(matchingTestMethod);
             }
         }
 

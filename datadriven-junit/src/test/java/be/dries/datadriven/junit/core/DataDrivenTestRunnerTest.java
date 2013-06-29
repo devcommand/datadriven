@@ -80,4 +80,18 @@ public class DataDrivenTestRunnerTest {
     public void testDataDrivenTestCaseWithDirectoryWithTestButNoMatchingTestMethodIsDefined() throws InitializationError {
         new DataDrivenTestRunner(DataDrivenTestWithDirectoryWithTestButNoTestMethod.class);
     }
+
+    @Test
+    public void testDataDrivenTestCaseVerifyTestsGeneratedForTestDirectories() throws InitializationError {
+        DataDrivenTestRunner runner = new DataDrivenTestRunner(DataDrivenTestWithDirectoryWithTests.class);
+
+        List<FrameworkMethod> testMethods = runner.computeTestMethods();
+
+        assertThat(testMethods)
+                .describedAs("Expected at least one test method!")
+                .hasSize(1);
+        assertThat(testMethods.get(0))
+                .describedAs("The test method does not have the expected name!")
+                .hasName("test");
+    }
 }
