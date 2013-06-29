@@ -94,4 +94,9 @@ public class DataDrivenTestRunnerTest {
                 .describedAs("The test method does not have the expected name!")
                 .hasName("test");
     }
+
+    @Test(expected = NoTestFileFoundException.class)
+    public void testDataDrivenTestCaseWithTestWithNoInputFile() throws InitializationError {
+        new DataDrivenTestRunner(DataDrivenTestWithDirectoryWithTestButMissingInputFile.class);
+    }
 }

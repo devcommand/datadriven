@@ -8,6 +8,6 @@ import be.dries.datadriven.junit.core.DataDrivenTestCase;
  *
  * @author Dries Elliott
  */
-@DataDrivenTestCase(directory = "nonExistentTestDirectory")
+@DataDrivenTestCase(directory = "nonExistentTestDirectory", inputFileName = "input.txt")
 public class DataDrivenTestWithNonExistentTestCaseDirectory {
 }
